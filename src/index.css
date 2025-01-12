@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-['Space_Grotesk'];
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  body.dark {
+    @apply bg-black text-white;
+  }
+  body.light {
+    @apply bg-white text-gray-800;
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(45deg, #FF9933, #138808);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  transition: background 0.3s ease;
+}
+
+.gradient-text.light {
+  background: linear-gradient(45deg, #138808, #FF9933);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.feature-card {
+  @apply bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-[#FF9933]/20 hover:border-[#FF9933]/40 transition-all duration-300;
+}
+
+.feature-card.light {
+  @apply bg-gray-200/50 backdrop-blur-sm rounded-xl p-6 border border-[#138808]/20 hover:border-[#138808]/40 transition-all duration-300;
+}
+
+/* Animation Classes */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 153, 51, 0.1),
+    transparent
+  );
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes borderGlow {
+  0% { border-color: rgba(255, 153, 51, 0.2); }
+  50% { border-color: rgba(19, 136, 8, 0.3); }
+  100% { border-color: rgba(255, 153, 51, 0.2); }
+}
+
+.animate-border-glow {
+  animation: borderGlow 4s ease-in-out infinite;
+}
+
+.animate-border-glow.light {
+  animation: borderGlow 4s ease-in-out infinite;
+}
+
+/* Status Indicator */
+.status-dot {
+  @apply h-2.5 w-2.5 rounded-full transition-all duration-300;
+}
+
+.status-dot.online {
+  @apply bg-green-500;
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+}
+
+.status-dot.offline {
+  @apply bg-gray-400;
+}
