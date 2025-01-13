@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaTwitter, FaGithub, FaBook, FaBars, FaTimes, FaStream, FaComments, FaRobot, FaSun, FaMoon, FaWallet } from 'react-icons/fa';
+import { FaTwitter, FaGithub, FaBook, FaBars, FaTimes, FaStream, FaComments, FaRobot, FaSun, FaMoon, FaWallet, FaCog } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
+import SettingsPanel from './SettingsPanel';
 
 function Navbar() {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [time, setTime] = useState(new Date());
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [userSettings, setUserSettings] = useState({
+    fontSize: '16',
+    colorPalette: 'dark',
+  });
 
   useEffect(() => {
     document.body.classList.toggle('dark', isDarkMode);
-  }, [isDarkMode]);
+    document.body.style.fontSize = `${userSettings.fontSize}px`;
+  }, [isDarkMode, userSettings.fontSize]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    if (userSettings.colorPalette === 'light') {
+      setIsDarkMode(false);
+    } else {
+      setIsDarkMode(true);
+    }
+  }, [userSettings.colorPalette]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -26,6 +34,14 @@ function Navbar() {
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
+  };
+
+  const toggleSettings = () => {
+    setIsSettingsOpen(!isSettingsOpen);
+  };
+
+  const handleSettingsChange = (settings) => {
+    setUserSettings(settings);
   };
 
   const formatTime = (date) => {
@@ -49,13 +65,22 @@ function Navbar() {
         </Link>
 
         {/* Hamburger Menu Button */}
-        <button 
-          onClick={toggleMenu} 
-          className={`transition-colors duration-300 z-50 p-2 rounded-lg hover:bg-[#FF9933]/20 ${isDarkMode ? 'text-[#FF9933] hover:text-white' : 'text-[#138808] hover:text-black'}`}
-          aria-label="Toggle menu"
-        >
-          <FaBars className="text-2xl" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={toggleMenu} 
+            className={`transition-colors duration-300 z-50 p-2 rounded-lg hover:bg-[#FF9933]/20 ${isDarkMode ? 'text-[#FF9933] hover:text-white' : 'text-[#138808] hover:text-black'}`}
+            aria-label="Toggle menu"
+          >
+            <FaBars className="text-2xl" />
+          </button>
+          <button
+            onClick={toggleSettings}
+            className={`transition-colors duration-300 z-50 p-2 rounded-lg hover:bg-[#FF9933]/20 ${isDarkMode ? 'text-[#FF9933] hover:text-white' : 'text-[#138808] hover:text-black'}`}
+            aria-label="Open settings"
+          >
+            <FaCog className="text-2xl" />
+          </button>
+        </div>
       </div>
 
       {/* Menu Overlay */}
@@ -195,6 +220,7 @@ function Navbar() {
       >
         {isDarkMode ? <FaSun className="text-2xl" /> : <FaMoon className="text-2xl" />}
       </button>
+      <SettingsPanel isOpen={isSettingsOpen} onClose={toggleSettings} onSettingsChange={handleSettingsChange} />
     </nav>
   );
 }

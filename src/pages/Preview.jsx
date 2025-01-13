@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-function Preview() {
+const Preview = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [usedResponses, setUsedResponses] = useState(new Set());
@@ -159,12 +159,7 @@ function Preview() {
       "Please do the needful Saar, I am working like Zomato delivery guy in bangalore traffic! 🛵",
       "As per my last email Saar, this is working exactly as intended... technically speaking! 📧",
       "One small correction Saar, have you tried restarting your brain? Works better than therapy! 🧠",
-      "Saar, this question is more complex than explaining to parents why I'm still single! 💝",
-      "Let me handle this Saar, with the grace of a Bollywood dance number! 💃",
-      "Saar, your request is more confusing than a Delhi street sign! 🚦",
-      "Processing your request Saar, with the speed of a Bollywood song transition! 🎶",
-      "Saar, let me get this done with the efficiency of a well-oiled Bollywood production! 🎬",
-      "Your request is more dramatic than a Bollywood climax scene, Saar! 💥",
+      "Saar, this question is more complex than explaining to parents why I'm still single! 💝"
     ]
   };
 
@@ -254,15 +249,16 @@ function Preview() {
 
     setMessages([...messages, { text: input, sender: 'user' }]);
 
+    // Get AI response
+    setTimeout(() => {
+      const category = categorizeInput(input);
+      const aiResponse = getRandomResponse(category);
+      setMessages(prevMessages => [...prevMessages, { text: aiResponse, sender: 'ai' }]);
+    }, 1000);
+
     // Randomly trigger collaboration chaos
     if (Math.random() < 0.2 && !collaborationMode) {
       startCollaborationChaos();
-    } else {
-      setTimeout(() => {
-        const category = categorizeInput(input);
-        const aiResponse = getRandomResponse(category);
-        setMessages(prevMessages => [...prevMessages, { text: aiResponse, sender: 'ai' }]);
-      }, 1000);
     }
 
     setInput('');
